@@ -1205,6 +1205,8 @@ func (s *Server) addSatelliteToGroup(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	s.invalidateGroupStatesCache(int64(sat.ID))
+
 	if err := tx.Commit(); err != nil {
 		log.Printf("Commit failed: %v", err)
 		HandleAppError(w, &AppError{
@@ -1357,6 +1359,8 @@ func (s *Server) removeSatelliteFromGroup(w http.ResponseWriter, r *http.Request
 		HandleAppError(w, err)
 		return
 	}
+
+	s.invalidateGroupStatesCache(int64(sat.ID))
 
 	if err := tx.Commit(); err != nil {
 		log.Printf("Commit failed: %v", err)

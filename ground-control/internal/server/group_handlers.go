@@ -292,6 +292,8 @@ func (s *Server) deleteGroupHandler(w http.ResponseWriter, r *http.Request) {
 			HandleAppError(w, err)
 			return
 		}
+
+		s.invalidateGroupStatesCache(int64(satellite.SatelliteID))
 	}
 
 	if err := q.DeleteGroup(r.Context(), group.ID); err != nil {
